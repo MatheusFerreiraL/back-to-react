@@ -170,13 +170,20 @@
 
           if (input === "CE") {
             setResult("");
-            setOperation(operation.slice(0, -2));
+            setOperation(operation.slice(0, -1));
             return;
           }
 
           if (input === "=") {
-            const operationResult = eval(operation);
+            let operationResult = eval(operation);
+            operationResult = parseFloat(operationResult.toFixed(10));
             setResult(operationResult);
+            return;
+          }
+
+          if (result) {
+            setOperation(isNaN(input) ? `${result}${input}` : input);
+            setResult("");
             return;
           }
 
@@ -184,9 +191,7 @@
             setOperation(`${operation}.`);
             return;
           }
-          setOperation(
-            `${operation}${operation.endsWith(".") ? "" : " "}${input}`
-          );
+          setOperation(`${operation}${input}`);
         }
 
         return (
